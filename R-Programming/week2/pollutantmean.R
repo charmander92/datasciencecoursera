@@ -17,6 +17,17 @@ pollutantmean <- function (directory, pollutant='sulfate',id = 1:332) {
     directory <- "./specdata"
   }
   
+  pollutant_means <- c()
+  all_files <- list.files(directory)
+  file_paths <- paste(directory, all_files,sep="/")
   
+  for (k in id) {
+    file <- read.csv(file_paths[k], header=T)
+    file_noNAs <- file[!is.na(file[, pollutant]),pollutant]
+    pollutant_means <- c(pollutant_means,file_noNAs)
+  }
+  
+  res <- mean(pollutant_means)
+  return(round(res,3))
   
 }
