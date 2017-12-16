@@ -1,3 +1,8 @@
+setwd("C:/Users/johan.edblom/Desktop/Learning/R")
+
+##data <- read.csv("./specdata/001.csv")
+
+
 pollutantmean <- function (directory, pollutant='sulfate',id = 1:332) {
   
   ## 'directory' is a character vector of length 1 indicating
@@ -19,10 +24,10 @@ pollutantmean <- function (directory, pollutant='sulfate',id = 1:332) {
   
   pollutant_means <- c()
   all_files <- list.files(directory)
-  file_paths <- paste(directory, all_files,sep="/")
+  file_path <- paste(directory, all_files,sep="/")
   
   for (k in id) {
-    file <- read.csv(file_paths[k], header=T)
+    file <- read.csv(file_path[k], header=T)
     file_noNAs <- file[!is.na(file[, pollutant]),pollutant]
     pollutant_means <- c(pollutant_means,file_noNAs)
   }
@@ -31,3 +36,5 @@ pollutantmean <- function (directory, pollutant='sulfate',id = 1:332) {
   return(round(res,3))
   
 }
+
+pollutantmean("specdata", "sulfate",1:20)
