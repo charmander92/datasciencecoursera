@@ -1,7 +1,7 @@
 makeCacheMatrix <-  function(X = matrix()) {
   # This function creates a special "matrix" object that can cache its inverse.
   invX <- NULL
-  set <- function(y) {
+  set <- function(Y) {
     X <<- Y
     invX <<- NULL
   }
