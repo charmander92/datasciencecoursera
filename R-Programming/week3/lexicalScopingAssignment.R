@@ -1,4 +1,4 @@
-makeCacheMatrix <-  function(X) {
+makeCacheMatrix <-  function(X = matrix()) {
   # This function creates a special "matrix" object that can cache its inverse.
   invX <- NULL
   set <- function(y) {
@@ -6,12 +6,11 @@ makeCacheMatrix <-  function(X) {
     invX <<- NULL
   }
   get <- function() X
-  setInv <- function(inv) X <<- solve
-  getInv <- function() X
+  setInv <- function(solve) invX <<- solve
+  getInv <- function() invX
   list(set = set, get = get,
        setInv = setInv,
        getInv = getInv)
-  
 }
 
 cacheSolve <- function(X,...) {
@@ -26,11 +25,22 @@ cacheSolve <- function(X,...) {
   }
   data <- X$get()
   invX <- solve(data, ...)
-  invX$setInv(invX)
+  X$setInv(invX)
   invX
-  
 }
 
-A <- matrix( c(5, 1, 0,
-               3,-1, 2,
-               4, 0,-1), nrow=3, byrow=TRUE)
+#Initiate invertible matrix
+A <- matrix(c(5, 1, 0,
+              3,-1, 2,
+              4, 0,-1), 
+          nrow=3, byrow=TRUE)
+
+#Populate a new variable holding both original matrix and an inverted version
+invTest <- makeCacheMatrix(A)
+# Print original matrix
+invTest$get()
+
+#First run, no cached data available since invX = NULL
+cacheSolve(invTest)
+#Second run of cahcesolve(), invX populated with the inverse and therefore we grab the cached result
+cacheSolve(invTest)
